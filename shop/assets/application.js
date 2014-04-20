@@ -13683,7 +13683,6 @@ window.Modernizr = (function( window, document, undefined ) {
 })(this, this.document);
 
 jQuery(function($){
-
   /* Placeholder JS */
   /*==========================*/
   $('[placeholder]').each(function(){
