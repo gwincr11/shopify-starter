@@ -1,0 +1,203 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+  <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+
+  <title>
+  {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}" />
+  {% endif %}
+
+  <link rel="canonical" href="{{ canonical_url }}" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  {% include 'open-graph-tags' %}
+
+  {{ content_for_header }}
+
+  {{ 'application.css' | asset_url | stylesheet_tag }}
+  {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' | stylesheet_tag }}
+
+  {% if template contains 'customers' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+  {% endif %}
+
+  {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+  {{ 'modernizr.js' | shopify_asset_url | script_tag }}
+
+  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+  <script>jQuery('html').removeClass('no-js').addClass('js');</script>
+
+</head>
+
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
+
+  <div class="container">
+
+    <header>
+
+      {% comment %}
+      Older browsers don't support the HTML5 placeholder attribute, so it's a good idea to use JavaScript
+      to show and hide the placeholder text.
+      Have a look in assets/shop.js.liquid to see sample JavaScript for this.
+      {% endcomment %}
+
+      <form action="/search" method="get" class="search-form" role="search">
+        <input name="q" type="text" id="search-field" placeholder="Search store..." class="hint" />
+        <input type="submit" id="search-submit" value="Search" />
+      </form>
+
+      {% if shop.customer_accounts_enabled %}
+      <p class="customer-links">
+        {% if customer %}
+          Logged in as <a href="/account">{{ customer.first_name }}</a> · {{ 'Log out' | customer_logout_link }}
+        {% else %}
+          {{ 'Log in' | customer_login_link }}
+          {% if shop.customer_accounts_optional %}
+          or {{ 'Create an account' | customer_register_link }}
+          {% endif %}
+        {% endif %}
+      </p>
+      {% endif %}
+
+      {% comment %}
+      Note on checkout link: it is a good idea to avoid linking to /checkout directly because shops that use
+      Paypal Express Checkout and/or Google Checkout have special checkout buttons on the /cart page. Also,
+      special instructions for the seller are entered on the /cart page.
+      {% endcomment %}
+
+      <p class="checkout-link">
+        <a href="/cart"><i class="fa fa-shopping-cart"></i> {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a>  ·
+        <a href="/cart">Check out</a>
+      </p>
+
+      {% comment %}
+      It would be nice if the logo was a shop setting, rather than a theme setting.
+      But for now, it is a theme setting. The shop logo is uploaded on the theme settings page.
+      Link to the theme settings page of currently published theme will always be:
+      http://www.shopify.com/admin/themes/current/settings.
+      To add theme settings to a theme, see this: http://docs.shopify.com/themes/theme-templates/settings
+      Theme settings are added to http://www.shopify.com/admin/themes/current#config/settings.html
+      {% endcomment %}
+
+      {% if settings.use_logo %}
+      <a id="logo" href="/" role="banner">
+        {{ 'logo.png' | asset_url | img_tag: shop.name }}
+      </a><!-- #logo -->
+      {% endif %}
+      {% if template == 'index' %}
+      <h1 id="site-title"{% if settings.use_logo %} class="hidden"{% endif %}>
+        <a href="/">{{ shop.name }}</a>
+      </h1>
+      {% else %}
+      <a id="site-title" href="/"{% if settings.use_logo %} class="hidden"{% endif %}>{{ shop.name }}</a>
+      {% endif %}
+
+      {% comment %}
+      A word on drop-down menus: Shopify has no concept of drop-down menus.
+      Drop-down menus in Shopify themes are a hack that relies on a naming convention.
+      To create a drop-down menu, the merchant must create a link list that has the same name as the link he wants the drop-down for.
+      For example, if he wants a drop-down under a 'Shop by brand' link (say, he has such link in his Main Menu), he needs to create
+      a linklist called 'Shop by brand', and populate it with links. Once he has done that, there'll be a drop-down under 'Shop by brand'.
+      Shopify has a visual how-to guide here: http://docs.shopify.com/manual/your-website/navigation/create-drop-down-menu.
+      The naming convention hack won't work well if a shop's navigation uses non-English characters. There's a much more verbose coding solution
+      that handles non-English characters here: http://docs.shopify.com/support/configuration/store-customization/can-i-have-drop-down-menus-that-use-non-english-characters.
+      A word on sub-categories: Shopify manages sub-categories using product tags: http://docs.shopify.com/manual/configuration/store-customization/subcategories.
+      {% endcomment %}
+
+      <nav role="navigation">
+        <ul class="nav">
+          {% for link in linklists.main-menu.links %}
+          {% assign has_sub_menu = false %}
+          {% assign has_sub_categories = false %}
+          {% assign parent_link_active = false %}
+          {% assign child_list_handle = link.title | handle %}
+          {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+            {% assign has_sub_menu = true %}
+            {% for l in linklists[child_list_handle].links %}
+              {% if handle != blank and handle == l.object.handle %}
+                {% assign parent_link_active = true %}
+              {% elsif page_title == l.title %}
+                {% assign parent_link_active = true %}
+              {% endif %}
+            {% endfor %}
+          {% elsif link.type == 'collection_link' and link.object.all_tags.size > 0 %}
+            {% assign has_sub_categories = true %}
+          {% endif %}
+          <li class="{% if link.active or parent_link_active %} active{% endif %}{% if has_sub_menu or has_sub_categories %} has-dropdown{% endif %}">
+            <a href="{{ link.url }}">{{ link.title }}{% if has_sub_menu or has_sub_categories %} <i class="fa fa-angle-down"></i>{% endif %}</a>
+            {% if has_sub_menu or has_sub_categories %}
+            <ul class="sub-nav">
+              {% if has_sub_menu %}
+                {% for l in linklists[child_list_handle].links %}
+                <li class="{% if l.active %} active{% endif %}">
+                  <a href="{{ l.url }}">{{ l.title }}</a>
+                </li>
+                {% endfor %}
+              {% elsif has_sub_categories %}
+                {% for tag in link.object.all_tags %}
+                <li class="{% if current_tags contains tag %} active{% endif %}">
+                  <a href="{{ link.url }}/{{ tag | handle }}">{{ tag }}</a>
+                </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+    </header>
+
+    <div id="main" role="main">
+      {% comment %}}
+      We have a template file to render.
+      That's what content_for_layout is for.
+      {% endcomment %}
+      {{ content_for_layout }}
+    </div>
+
+    <footer>
+
+      {% if linklists.footer.links.size > 0 %}
+      <p role="navigation">
+      {% for link in linklists.footer.links %}
+        <a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a>
+      {% endfor %}
+      </p>
+      {% endif %}
+
+      {% unless shop.enabled_payment_types == empty %}
+	  <div class="payment-types">
+        {% for type in shop.enabled_payment_types %}
+        <img width="50" src="{{ type | payment_type_img_url }}" />
+        {% endfor %}
+      </div>
+      {% endunless %}
+
+      <p role="contentinfo">Copyright &copy; {{ "now" | date: "%Y" }} {{ shop.name }}. {{ powered_by_link }}.</p>
+
+    </footer>
+
+    {% comment %}Shopify does not support Internet Explorer 6 nor 7. It does encourage themes to support IE8 until the end of 2014.{% endcomment %}
+    <!--[if lt IE 8]>
+    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+
+  </div><!-- end of #container -->
+
+  {{ 'application-min.js'  | asset_url | script_tag }}
+
+</body>
+</html>

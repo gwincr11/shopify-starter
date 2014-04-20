@@ -1,0 +1,21 @@
+{
+  "name": "analog-forest",
+  "version": "0.0.0",
+  "homepage": "analogforest.com",
+  "authors": [
+    "Cory <gwincr11@yahoo.com>"
+  ],
+  "dependencies": {
+    "modernizr": "~2.6.2",
+      "jquery": "~1.11.0",
+      "bootstrap": "~3.1.1"
+    },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

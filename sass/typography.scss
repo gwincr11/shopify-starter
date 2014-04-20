@@ -1,0 +1,46 @@
+@import "compass/typography/vertical_rhythm";
+$base-font-size: 18px;
+$base-line-height: 27px;
+$rhythm-unit: 'rem';
+
+@include establish-baseline;
+
+body{
+  font-family: arial, helvetica, san-serif;
+  color: $dark-grey;
+}
+
+h1{
+  @include adjust-font-size-to(42px);
+}
+
+h2{
+  @include adjust-font-size-to(36px);
+}
+
+h3{
+  @include adjust-font-size-to(30px);
+}
+
+h4{
+  @include adjust-font-size-to(24px);
+}
+
+h5{
+  @include adjust-font-size-to(20px);
+}
+
+p {
+  @include trailer(1);
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.5s 0 ease;
+  color: $blue;
+}
+
+a:hover {
+  text-decoration: none;
+  color: $dark-blue;
+}

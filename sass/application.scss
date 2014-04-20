@@ -1,0 +1,23 @@
+@import "bootstrap";
+@import 'colors';
+@import 'typography';
+/* Product page */
+/* Quickly hiding default variant drop-down when JavaScript is enabled */
+/* See this: http://www.learningjquery.com/2008/10/1-way-to-avoid-the-flash-of-unstyled-content/ */
+.js #product-select { display: none; }
+
+
+/* Utility classes: Hidden, float left, float right, etc. */
+.hide { display: none; }
+.left { float: left; }
+.right { float: right; }
+
+
+/* Override to globally-hosted search.css on the /search page */
+#searchresults input {
+  width: auto;
+}
+
+/* Footer */
+/* IE8 does not support SVG */
+.lt-ie9 .payment-types { display:none; }
