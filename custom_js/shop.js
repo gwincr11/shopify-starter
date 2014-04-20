@@ -1,4 +1,5 @@
 jQuery(function($){
+
   /* Placeholder JS */
   /*==========================*/
   $('[placeholder]').each(function(){
