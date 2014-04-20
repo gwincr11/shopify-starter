@@ -103,7 +103,7 @@ module.exports = function(grunt) {
       },
       scripts: {
         files: [
-          './bower_components/jquery/dist/jquery.js',
+          './bower_components/{,*/}*.js',
           './custom_js/shop.js',
           'Gruntfile.js'
         ],
