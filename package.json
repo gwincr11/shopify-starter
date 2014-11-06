@@ -1,5 +1,5 @@
 {
-  "name": "analog-forest",
+  "name": "shopify-starter",
   "version": "0.0.0",
   "description": "shopify theme",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/gwincr11/analog_forest_shopify.git"
+    "url": "git://github.com/gwincr11/shopify-starter.git"
   },
   "author": "Cory Gwin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gwincr11/analog_forest_shopify/issues"
+    "url": "https://github.com/gwincr11/shopify-starter/issues"
   },
-  "homepage": "https://github.com/gwincr11/analog_forest_shopify",
+  "homepage": "https://github.com/gwincr11/shopify-starter",
   "devDependencies": {
     "growl": "^1.7.0",
     "grunt": "^0.4.4",

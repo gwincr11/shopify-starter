@@ -1,9 +1,9 @@
 {
-  "name": "analog-forest",
+  "name": "shopify-starter",
   "version": "0.0.0",
-  "homepage": "analogforest.com",
+  "homepage": "https://github.com/gwincr11/shopify-starter",
   "authors": [
-    "Cory <gwincr11@yahoo.com>"
+    "Cory Gwin"
   ],
   "dependencies": {
     "modernizr": "~2.6.2",
