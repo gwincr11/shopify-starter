@@ -15,11 +15,12 @@ This starter tool utilizes many tools I have used over and over for development 
 10. grunt concat - concatinates all js files into a single file - https://github.com/gruntjs/grunt-contrib-concat
 11. grunt concat bower - same thing but understand bowers folder structure - https://github.com/sapegin/grunt-bower-concat
 12. grunt uglify - minimizes your javascript - https://github.com/gruntjs/grunt-contrib-uglify
+13. Bundler - manages ruby dependencies like compass - bundler.io
 
 Getting started
 ---------------------
 1. Clone this repo
-2. Make sure you have npm, grunt, and bower installed. You can read about installing these on their respective documentations.
+2. Make sure you have ruby, bundler, npm, grunt, and bower installed. You can read about installing these on their respective documentations.
 3. Install grunt modules - npm install
 4. Install bower components - bower install
 5. Setup your api, password and store url in the Gruntfile.js
@@ -82,4 +83,6 @@ Basic structure
 ├──.sass-cache
 ```
 
-
+Emails
+---------------
+If you are looking for some starter email templates check out https://github.com/Cam/Shopify-HTML-Email-Templates
