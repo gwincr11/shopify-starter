@@ -36,9 +36,10 @@ shopify: {
 },
 ```
 6. Setup your live reload browser plugin.
-7. Run grunt watch.
-8. Start coding.
-9. World domination!
+7. Setup you bundler components - bundle install
+8. Run grunt watch.
+9. Start coding.
+10. World domination!
 
 What is happening?!
 -----------------
