@@ -1,6 +1,6 @@
 Shopify Starter - Grunt, Bootstrap, Modernizr, jQuery, Compass, Live Reload and more
 ============
-
+** No longer maintained **
 This starter tool utilizes many tools I have used over and over for development and attempts to wrap them all into a sensible starting place. It includes the following tools
 
 1. Bower - for js package managment http://bower.io/
